@@ -37,7 +37,35 @@ function SignIn() {
     const provider = new firebase.auth.GoogleAuthProvider();
     auth.signInWithPopup(provider);
   };
-  return <button onClick={signInWithGoogle}>Sign In With Google</button>;
+  return (
+    <>
+      <body className='bg-stone-400 h-screen'>
+        <div className='flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 '>
+          <div className='mt-20 max-w-md w-full space-y-8'>
+            <div>
+              <h2 className='mt-6 text-center text-3xl font-extrabold text-gray-900'>
+                Live React Chat
+              </h2>
+              <p className='mt-2 text-center text-sm text-gray-600'>
+                <a href='#' className='font-medium text-black'>
+                  sign in to begin
+                </a>
+              </p>
+            </div>
+            <div>
+              <button
+                onClick={signInWithGoogle}
+                type='submit'
+                className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+              >
+                Sign In With Google
+              </button>
+            </div>
+          </div>
+        </div>
+      </body>
+    </>
+  );
 }
 
 function SignOut() {
@@ -54,12 +82,13 @@ function ChatRoom() {
   const [formValue, setFormValue] = useState("");
   const sendMessage = async (e) => {
     e.preventDefault();
-    const { uid, photoURL } = auth.currentUser;
+    const { uid, photoURL, displayName } = auth.currentUser;
     await messagesRef.add({
       text: formValue,
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       uid,
       photoURL,
+      displayName,
     });
     setFormValue("");
     dummy.current.scrollIntoView({ behavior: "smooth" });
@@ -86,11 +115,8 @@ function ChatRoom() {
   );
 }
 
-{
-}
-
 function ChatMessage(props) {
-  const { text, uid, photoURL } = props.message;
+  const { text, uid, photoURL, displayName } = props.message;
   const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
   return (
     <div className={`message ${messageClass}`}>
@@ -99,7 +125,9 @@ function ChatMessage(props) {
           photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
         }
       />
-      <p>{text}</p>
+      <p>
+        {displayName}: {text}
+      </p>
     </div>
   );
 }
