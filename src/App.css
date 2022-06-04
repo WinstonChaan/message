@@ -41,7 +41,8 @@
   margin: auto;
   max-width: 300px;
   margin-right: 1px;
-  margin-top: 10px;
+  color: white;
+  margin-bottom: 15px;
 }
 
 .received {
@@ -49,5 +50,6 @@
   margin: auto;
   max-width: 300px;
   margin-left: 1px;
-  margin-top: 10px;
+  color: white;
+  margin-bottom: 15px;
 }
