@@ -35,3 +35,19 @@
     transform: rotate(360deg);
   }
 }
+
+.sent {
+  background-color: #0a7ef4;
+  margin: auto;
+  max-width: 300px;
+  margin-right: 1px;
+  margin-top: 10px;
+}
+
+.received {
+  background-color: #343434;
+  margin: auto;
+  max-width: 300px;
+  margin-left: 1px;
+  margin-top: 10px;
+}

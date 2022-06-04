@@ -96,21 +96,23 @@ function ChatRoom() {
 
   return (
     <>
-      <main>
-        {messages &&
-          messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
-        <div ref={dummy}></div>
-      </main>
-      <form onSubmit={sendMessage}>
-        <input
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-          placeholder='Message'
-        />
-        <button type='submit' disabled={!formValue}>
-          ENTER
-        </button>
-      </form>
+      <div className='max-w-xl bg-zinc-800 justify-center items-center m-auto'>
+        <main>
+          {messages &&
+            messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+          <div ref={dummy}></div>
+        </main>
+        <form onSubmit={sendMessage}>
+          <input
+            value={formValue}
+            onChange={(e) => setFormValue(e.target.value)}
+            placeholder='Message'
+          />
+          <button type='submit' disabled={!formValue}>
+            ENTER
+          </button>
+        </form>
+      </div>
     </>
   );
 }
@@ -121,6 +123,7 @@ function ChatMessage(props) {
   return (
     <div className={`message ${messageClass}`}>
       <img
+        className='object-contain h-10 w-10'
         src={
           photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
         }
