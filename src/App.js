@@ -23,7 +23,7 @@ const firestore = firebase.firestore();
 function App() {
   const [user] = useAuthState(auth);
   return (
-    <div className='App bg-stone-400 h-screen pb-10'>
+    <div className='App bg-stone-400 h-screen pt-3'>
       <header>
         <SignOut />
       </header>
@@ -72,7 +72,7 @@ function SignOut() {
   return (
     auth.currentUser && (
       <button
-        className='group relative w-50 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+        className='m-auto relative w-50 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
         onClick={() => auth.signOut()}
       >
         Sign Out
@@ -103,28 +103,32 @@ function ChatRoom() {
 
   return (
     <>
-      <div className='chatroom overflow-y-auto pt-6 pb-3 pr-3 pl-3 rounded-3xl max-w-xl bg-zinc-800 justify-center items-center m-auto'>
+      <div className='chatroom mt-3 rounded-t-3xl overflow-y-auto pt-6 pb-3 pr-3 pl-3 max-w-xl bg-zinc-800 justify-center items-center m-auto'>
         <main>
           {messages &&
             messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
           <div ref={dummy}></div>
         </main>
       </div>
-      <form onSubmit={sendMessage}>
-        <input
-          className='pl-5 mb-2 mt-5 w-80 h-10 rounded-md'
-          value={formValue}
-          onChange={(e) => setFormValue(e.target.value)}
-          placeholder='Message'
-        />
-        <button
-          className='ml-96 group relative w-80 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-          type='submit'
-          disabled={!formValue}
-        >
-          Send
-        </button>
-      </form>
+      <div className='bg-zinc-800 h-32 rounded-b-3xl max-w-xl m-auto'>
+        <form onSubmit={sendMessage}>
+          <input
+            className='messagebox pl-5 mb-2 mt-5 h-10 rounded-md w-full max-w-xl'
+            value={formValue}
+            onChange={(e) => setFormValue(e.target.value)}
+            placeholder='Message'
+          />
+          <button
+            className='sendbutton flex justify-center py-2 px-4 border border-transparent text-sm font-medium 
+            rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2
+            focus:ring-indigo-500 w-full'
+            type='submit'
+            disabled={!formValue}
+          >
+            Send
+          </button>
+        </form>
+      </div>
     </>
   );
 }
@@ -135,12 +139,12 @@ function ChatMessage(props) {
   return (
     <div className={`message ${messageClass}`}>
       <img
-        className='object-contain h-10 w-10'
+        className='object-contain h-8 w-8'
         src={
           photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
         }
       />
-      <p>
+      <p className='pl-2 pr-2'>
         {displayName}: {text}
       </p>
     </div>
