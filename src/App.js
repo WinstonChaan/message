@@ -23,7 +23,7 @@ const firestore = firebase.firestore();
 function App() {
   const [user] = useAuthState(auth);
   return (
-    <div className='App bg-stone-400 pb-10'>
+    <div className='App bg-stone-400 h-screen pb-10'>
       <header>
         <SignOut />
       </header>
@@ -103,28 +103,28 @@ function ChatRoom() {
 
   return (
     <>
-      <div className='pt-6 pb-3 pr-3 pl-3 rounded-3xl max-w-xl bg-zinc-800 justify-center items-center m-auto'>
+      <div className='chatroom overflow-y-auto pt-6 pb-3 pr-3 pl-3 rounded-3xl max-w-xl bg-zinc-800 justify-center items-center m-auto'>
         <main>
           {messages &&
             messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
           <div ref={dummy}></div>
         </main>
-        <form onSubmit={sendMessage}>
-          <input
-            className='pl-5 mb-2 mt-5 min-w-full h-10 rounded-md'
-            value={formValue}
-            onChange={(e) => setFormValue(e.target.value)}
-            placeholder='Message'
-          />
-          <button
-            className='group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-            type='submit'
-            disabled={!formValue}
-          >
-            Send
-          </button>
-        </form>
       </div>
+      <form onSubmit={sendMessage}>
+        <input
+          className='pl-5 mb-2 mt-5 w-80 h-10 rounded-md'
+          value={formValue}
+          onChange={(e) => setFormValue(e.target.value)}
+          placeholder='Message'
+        />
+        <button
+          className='ml-96 group relative w-80 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          type='submit'
+          disabled={!formValue}
+        >
+          Send
+        </button>
+      </form>
     </>
   );
 }
