@@ -6,7 +6,6 @@ import "firebase/compat/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
-import { data } from "autoprefixer";
 
 firebase.initializeApp({
   apiKey: "AIzaSyD9e5HkCujSQCYFZ8s9JCzgw5uCSfFzW6o",
@@ -25,12 +24,34 @@ function App() {
   const [user] = useAuthState(auth);
   return (
     <div className='App bg-stone-400 h-screen pt-3'>
-      <header>
-        <SignOut />
+      <header className='flex'>
+        <SignOut />{" "}
+        <button
+          className='justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+          onClick={undo}
+        >
+          Unsend
+        </button>
       </header>
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );
+}
+
+async function undo() {
+  let dataID = [];
+  await firestore
+    .collection("messages")
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data().uid === auth.currentUser.uid) {
+          dataID.push(doc.id);
+        }
+      });
+    });
+  let lastMessage = dataID[dataID.length - 1];
+  return firestore.collection("messages").doc(lastMessage).delete();
 }
 
 function SignIn() {
@@ -73,29 +94,13 @@ function SignOut() {
   return (
     auth.currentUser && (
       <button
-        className='m-auto relative w-50 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+        className='ml-48 mr-1 relative w-50 flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
         onClick={() => auth.signOut()}
       >
         Sign Out
       </button>
     )
   );
-}
-
-async function undo() {
-  let dataID = [];
-  await firestore
-    .collection("messages")
-    .get()
-    .then((snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        if (doc.data().uid === auth.currentUser.uid) {
-          dataID.push(doc.id);
-        }
-      });
-    });
-  let lastMessage = dataID[dataID.length - 1];
-  return firestore.collection("messages").doc(lastMessage).delete();
 }
 
 function ChatRoom() {
@@ -120,7 +125,6 @@ function ChatRoom() {
 
   return (
     <>
-      <button onClick={undo}>UNDO</button>
       <div className='chatroom mt-3 rounded-t-3xl overflow-y-auto pt-6 pb-3 pr-3 pl-3 max-w-xl bg-zinc-800 justify-center items-center m-auto'>
         <main>
           {messages &&
@@ -157,13 +161,13 @@ function ChatMessage(props) {
   return (
     <div className={`message ${messageClass}`}>
       <img
-        alt='wow'
-        className='object-contain h-8 w-8'
+        alt='Profile'
+        className='ml-1 float-right object-contain h-8 w-8 rounded-3xl '
         src={
           photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
         }
       />
-      <p className='pl-2 pr-2'>
+      <p>
         {displayName}: {text}
       </p>
     </div>
