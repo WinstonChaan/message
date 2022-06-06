@@ -6,6 +6,7 @@ import "firebase/compat/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { data } from "autoprefixer";
 
 firebase.initializeApp({
   apiKey: "AIzaSyD9e5HkCujSQCYFZ8s9JCzgw5uCSfFzW6o",
@@ -47,7 +48,7 @@ function SignIn() {
                 Live React Chat
               </h2>
               <p className='mt-2 text-center text-sm text-gray-600'>
-                <a href='#' className='font-medium text-black'>
+                <a href='wow' className='font-medium text-black'>
                   sign in to begin
                 </a>
               </p>
@@ -81,6 +82,22 @@ function SignOut() {
   );
 }
 
+async function undo() {
+  let dataID = [];
+  await firestore
+    .collection("messages")
+    .get()
+    .then((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data().uid === auth.currentUser.uid) {
+          dataID.push(doc.id);
+        }
+      });
+    });
+  let lastMessage = dataID[dataID.length - 1];
+  return firestore.collection("messages").doc(lastMessage).delete();
+}
+
 function ChatRoom() {
   const dummy = useRef();
   const messagesRef = firestore.collection("messages");
@@ -103,6 +120,7 @@ function ChatRoom() {
 
   return (
     <>
+      <button onClick={undo}>UNDO</button>
       <div className='chatroom mt-3 rounded-t-3xl overflow-y-auto pt-6 pb-3 pr-3 pl-3 max-w-xl bg-zinc-800 justify-center items-center m-auto'>
         <main>
           {messages &&
@@ -139,6 +157,7 @@ function ChatMessage(props) {
   return (
     <div className={`message ${messageClass}`}>
       <img
+        alt='wow'
         className='object-contain h-8 w-8'
         src={
           photoURL || "https://api.adorable.io/avatars/23/abott@adorable.png"
