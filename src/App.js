@@ -26,12 +26,16 @@ function App() {
     <div className='App bg-stone-400 h-screen pt-3'>
       <header className='flex'>
         <SignOut />{" "}
-        <button
-          className='mr-auto ml-1 justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
-          onClick={undo}
-        >
-          Unsend
-        </button>
+        {user ? (
+          <button
+            className='mr-auto ml-1 justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+            onClick={undo}
+          >
+            Unsend
+          </button>
+        ) : (
+          <></>
+        )}
       </header>
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
