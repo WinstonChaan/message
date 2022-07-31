@@ -6,15 +6,16 @@ import "firebase/compat/firestore";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+require("dotenv").config();
 
 firebase.initializeApp({
-  apiKey: "AIzaSyD9e5HkCujSQCYFZ8s9JCzgw5uCSfFzW6o",
-  authDomain: "message-ccea8.firebaseapp.com",
-  databaseURL: "https://message-ccea8-default-rtdb.firebaseio.com",
-  projectId: "message-ccea8",
-  storageBucket: "message-ccea8.appspot.com",
-  messagingSenderId: "813634721303",
-  appId: "1:813634721303:web:9d6cbc132c47a55bd82e52",
+  apiKey: process.env.API_KEY,
+  authDomain: process.env.AUTH_DOMAIN,
+  databaseURL: process.env.DATABASE_URL,
+  projectId: process.env.PROJECT_ID,
+  storageBucket: process.env.STORAGE_BUCKET,
+  messagingSenderId: process.env.MESSAGING_SENDER_ID,
+  appId: process.env.APP_ID,
 });
 
 const auth = firebase.auth();
